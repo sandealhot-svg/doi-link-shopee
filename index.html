@@ -1,0 +1,50 @@
+<script>
+function pasteLink() {
+    navigator.clipboard.readText().then(text => {
+        document.getElementById("link").value = text;
+    });
+}
+
+function convert() {
+    let link = document.getElementById("link").value.trim();
+
+    // ❌ chưa nhập
+    if (link === "") {
+        alert("⚠️ Vui lòng dán link Shopee");
+        return;
+    }
+
+    // ✅ chỉ chấp nhận đúng đầu link
+    if (
+        !link.startsWith("https://shopee.vn/") &&
+        !link.startsWith("shopee.vn/")
+    ) {
+        alert("❌ Vui lòng nhập đúng link sản phẩm Shopee");
+        return;
+    }
+
+    // ✅ nếu thiếu https thì tự thêm
+    if (link.startsWith("shopee.vn/")) {
+        link = "https://" + link;
+    }
+
+    // ✅ gắn mã affiliate của bạn
+    let affiliate =
+        "https://shopee.vn/?mmp_pid=an_17301810385&url=" +
+        encodeURIComponent(link);
+
+    document.getElementById("result").innerText = affiliate;
+}
+
+function copy() {
+    let text = document.getElementById("result").innerText;
+
+    if (text.includes("Kết quả")) {
+        alert("⚠️ Vui lòng chuyển đổi link trước");
+        return;
+    }
+
+    navigator.clipboard.writeText(text);
+    alert("✅ Đã sao chép link affiliate của bạn!");
+}
+</script>
