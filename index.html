@@ -10,6 +10,7 @@ body{
     font-family: Arial, sans-serif;
     background:#f4f6ff;
 }
+
 .box{
     max-width:520px;
     margin:60px auto;
@@ -19,11 +20,17 @@ body{
     text-align:center;
     box-shadow:0 10px 25px rgba(0,0,0,.08);
 }
+
+h2{
+    margin-bottom:22px;
+}
+
 .input-box{
     display:flex;
     gap:10px;
     margin-bottom:20px;
 }
+
 input{
     flex:1;
     padding:14px;
@@ -31,6 +38,7 @@ input{
     border:1px solid #ddd;
     font-size:16px;
 }
+
 button{
     padding:13px 22px;
     border:none;
@@ -40,7 +48,11 @@ button{
     font-size:15px;
     cursor:pointer;
 }
-.paste{ background:#ff6a00; }
+
+.paste{
+    background:#ff6a00;
+}
+
 .result{
     margin-top:20px;
     padding:15px;
@@ -48,6 +60,7 @@ button{
     border-radius:14px;
     word-break:break-all;
 }
+
 .note{
     margin-top:18px;
     font-size:14px;
@@ -62,7 +75,7 @@ button{
 <h2>Đổi link Shopee có mã toàn sàn</h2>
 
 <div class="input-box">
-    <input id="link" placeholder="Dán link Shopee tại đây">
+    <input id="link" placeholder="Dán link Shopee vào đây...">
     <button class="paste" onclick="paste()">📋 Dán</button>
 </div>
 
@@ -76,41 +89,39 @@ Kết quả sẽ hiển thị ở đây...
 </div>
 
 <p class="note">
-🔥 Săn Deal Hot – link đã gắn affiliate của bạn
+🔥 Link giữ nguyên sản phẩm – đã gắn affiliate của bạn
 </p>
 </div>
 
 <script>
 function paste(){
-    navigator.clipboard.readText().then(t=>{
-        document.getElementById("link").value=t.trim();
+    navigator.clipboard.readText().then(text=>{
+        document.getElementById("link").value = text.trim();
     });
 }
 
 function convert(){
     let link = document.getElementById("link").value.trim();
 
+    // chưa nhập
     if(link === ""){
         alert("⚠️ Vui lòng dán link Shopee");
         return;
     }
 
-    // ✅ CHẤP NHẬN MỌI LINK SHOPEE
-    if(
-        !link.includes("shopee.vn") &&
-        !link.includes("s.shopee.vn") &&
-        !link.includes("shp.ee")
-    ){
+    // CHỈ cần có chữ shopee là OK
+    if(!link.toLowerCase().includes("shopee")){
         alert("❌ Đây không phải link Shopee");
         return;
     }
 
-    // nếu thiếu https thì thêm
+    // thiếu https thì tự thêm
     if(!link.startsWith("http")){
         link = "https://" + link;
     }
 
-    let affiliate =
+    // gắn affiliate — KHÔNG đổi sản phẩm
+    const affiliate =
         "https://shopee.vn/?mmp_pid=an_17301810385&url=" +
         encodeURIComponent(link);
 
@@ -118,13 +129,15 @@ function convert(){
 }
 
 function copy(){
-    let t = document.getElementById("result").innerText;
-    if(t.includes("Kết quả")){
-        alert("⚠️ Hãy chuyển đổi link trước");
+    let text = document.getElementById("result").innerText;
+
+    if(text.includes("Kết quả")){
+        alert("⚠️ Chưa có link để sao chép");
         return;
     }
-    navigator.clipboard.writeText(t);
-    alert("✅ Đã sao chép link affiliate!");
+
+    navigator.clipboard.writeText(text);
+    alert("✅ Đã sao chép link affiliate");
 }
 </script>
 
